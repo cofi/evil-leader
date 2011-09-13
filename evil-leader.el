@@ -111,4 +111,6 @@ The combination has to be readable by `read-kbd-macro'."
     (setq key (pop bindings)
           def (pop bindings))))
 
+(put 'evil-leader/set-key 'lisp-indent-function 'defun)
+
 (provide 'evil-leader)

@@ -1,10 +1,13 @@
-;; evil-leader -- let there be <leader>
+;;; evil-leader.el --- let there be <leader>
 
 ;; Copyright (C) 2011 by Michael Markert
-;; Author: 2011 Michael Markert <markert.michael@googlemail.com>
+;; Author: Michael Markert <markert.michael@googlemail.com>
+;; URL: http://github.com/cofi/evil-leader
+;; Git-Repository: git://github.com/cofi/evil-leader.git
 ;; Created: 2011-09-13
 ;; Version: 0.1
-;; Keywords: numbers increment decrement octal hex binary
+;; Keywords: evil vim-emulation leader
+;; Package-Requires: ((evil))
 
 ;; This file is not part of GNU Emacs.
 
@@ -33,8 +36,6 @@
 ;; and call them via <leader>key or <prefixed-leader>key in emacs/insert state
 ;; if `evil-leader/in-all-states' is non-nil
 
-;; Homepage: http://github.com/cofi/evil-leader
-;; Git-Repository: git://github.com/cofi/evil-leader.git
 
 (require 'evil)
 
@@ -114,3 +115,4 @@ The combination has to be readable by `read-kbd-macro'."
 (put 'evil-leader/set-key 'lisp-indent-function 'defun)
 
 (provide 'evil-leader)
+;;; evil-numbers.el ends here

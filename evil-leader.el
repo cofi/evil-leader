@@ -7,7 +7,7 @@
 ;; Created: 2011-09-13
 ;; Version: 0.1
 ;; Keywords: evil vim-emulation leader
-;; Package-Requires: ((evil))
+;; Package-Requires: ((evil "0"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -115,4 +115,4 @@ The combination has to be readable by `read-kbd-macro'."
 (put 'evil-leader/set-key 'lisp-indent-function 'defun)
 
 (provide 'evil-leader)
-;;; evil-numbers.el ends here
+;;; evil-leader.el ends here

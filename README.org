@@ -1,0 +1,47 @@
+* What's Evil Leader?
+  Evil Leader provides the =<leader>= feature from Vim that provides an easy way
+  to bind keys under a variable prefix key. For an experienced Emacs User it is
+  nothing more than a convoluted key map, but for a Evil user coming from Vim it
+  means an easier start.
+
+** Installation
+   Put =evil-leader.el= into =load-path= and =(require 'evil-leader)=.
+
+** Usage
+   Use =evil-leader/set-key= to bind keys in the leader map.
+   For example:
+   #+BEGIN_SRC emacs-lisp
+(evil-leader/set-key "e" 'file-file)
+   #+END_SRC
+   You can also bind several keys at once:
+   #+BEGIN_SRC emacs-lisp
+(evil-leader/set-key
+  "e" 'file-file
+  "b" 'switch-to-buffer
+  "k" 'kill-buffer)
+   #+END_SRC
+   The key map can of course be filled in several places.
+
+   After you set up the key map you can access the bindings by pressing =<leader>=
+   (default: =\=) and the key(s). E.g. =\ e= would call =find-file= to open a file.
+
+   If you wish to change so you can customize =evil-leader/leader= or call
+   =evil-leader/set-leader=, e.g. =(evil-leader/set-leader ",")= to change it to
+   ",".
+   The leader has to be readable by =read-kbd-macro=, so using Space as a
+   prefix key would be =(evil-leader/set-leader "<Space>")=.
+
+** FAQ
+*** <leader> is not working in certain buffers! Why?
+    This can have two reasons. First, the buffer is not in normal state (like
+    insert or emacs state). If you set =evil-leader/in-all-states= to non-nil
+    (before loading evil-leader or via customize) you can access the leader
+    keymap still with the non-normal-prefix + leader (default: =C-\=).
+
+    Second, =<leader>= can be overshadowed by the current major-mode because
+    evil-leader uses the global keymap which has a lower priority than the local
+    keymap. To still use =<leader>= you have to either use another key or 
+
+  Have a
+    look at =C-h k <leader>=, if it is bound then it overshadows the evil-leader
+    keymap.

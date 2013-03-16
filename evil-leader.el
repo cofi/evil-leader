@@ -70,7 +70,7 @@ Passing `nil' as `prefix' disables non-normal-prefix."
       (define-key evil-normal-state-map old nil)
       (define-key evil-visual-state-map old nil))
     (define-key evil-normal-state-map key evil-leader/map)
-    (define-key evil-visual-state-map-state-map key evil-leader/map)))
+    (define-key evil-visual-state-map key evil-leader/map)))
 
 ;;; customization
 

@@ -1,11 +1,11 @@
 ;;; evil-leader.el --- let there be <leader>
 
-;; Copyright (C) 2011 by Michael Markert
+;; Copyright (C) 2011-2013 by Michael Markert
 ;; Author: Michael Markert <markert.michael@googlemail.com>
 ;; URL: http://github.com/cofi/evil-leader
 ;; Git-Repository: git://github.com/cofi/evil-leader.git
 ;; Created: 2011-09-13
-;; Version: 0.1
+;; Version: 0.2
 ;; Keywords: evil vim-emulation leader
 ;; Package-Requires: ((evil "0"))
 

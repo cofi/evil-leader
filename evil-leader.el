@@ -67,8 +67,10 @@ Passing `nil' as `prefix' disables non-normal-prefix."
       (define-key evil-emacs-state-map prefixed evil-leader/map)
       (define-key evil-insert-state-map prefixed evil-leader/map))
     (when old
-      (define-key evil-normal-state-map old nil))
-    (define-key evil-normal-state-map key evil-leader/map)))
+      (define-key evil-normal-state-map old nil)
+      (define-key evil-visual-state-map old nil))
+    (define-key evil-normal-state-map key evil-leader/map)
+    (define-key evil-visual-state-map-state-map key evil-leader/map)))
 
 ;;; customization
 
@@ -78,7 +80,7 @@ Passing `nil' as `prefix' disables non-normal-prefix."
   :prefix 'evil-leader/)
 
 (defcustom evil-leader/leader "\\"
-  "The <leader> key, used to access keys defined by `evil-leader/set-key' in normal state.
+  "The <leader> key, used to access keys defined by `evil-leader/set-key' in normal and visual state.
 Must be readable by `read-kbd-macro'. For example: \",\"."
   :type "string"
   :group 'evil-leader

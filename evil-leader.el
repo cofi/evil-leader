@@ -5,7 +5,7 @@
 ;; URL: http://github.com/cofi/evil-leader
 ;; Git-Repository: git://github.com/cofi/evil-leader.git
 ;; Created: 2011-09-13
-;; Version: 0.2
+;; Version: 0.2.1
 ;; Keywords: evil vim-emulation leader
 ;; Package-Requires: ((evil "0"))
 

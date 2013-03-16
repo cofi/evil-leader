@@ -24,6 +24,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+;;
 ;; Known Bugs:
 ;; See http://github.com/cofi/evil-leader/issues
 
@@ -36,6 +38,7 @@
 ;; and call them via <leader>key or <prefixed-leader>key in emacs/insert state
 ;; if `evil-leader/in-all-states' is non-nil
 
+;;; Code:
 
 (require 'evil)
 

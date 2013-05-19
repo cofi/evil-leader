@@ -74,6 +74,19 @@ The combination has to be readable by `read-kbd-macro'."
 (define-minor-mode evil-leader-mode
   "Minor mode to enable <leader> support."
   :init-value nil
+(defun evil-leader/set-leader (key &optional prefix)
+  "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
+
+Passing `nil' as `prefix' leaves prefix unchanged."
+  (let ((turned-on evil-leader-mode))
+    (when turned-on
+      (evil-leader-mode -1))
+    (setq evil-leader/leader key)
+    (when prefix
+      (setq evil-leader/non-normal-prefix prefix))
+    (when turned-on
+      (evil-leader-mode))))
+
   :keymap nil
   (let ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader))))
     (if evil-leader-mode

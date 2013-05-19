@@ -8,6 +8,11 @@
    Put =evil-leader.el= into =load-path= and =(require 'evil-leader)=.
 
 ** Usage
+   #+BEGIN_SRC emacs-lisp
+(global-evil-leader-mode)
+   #+END_SRC
+   to enable =evil-leader= in every buffer where =evil= is enabled.
+
    Use =evil-leader/set-key= to bind keys in the leader map.
    For example:
    #+BEGIN_SRC emacs-lisp

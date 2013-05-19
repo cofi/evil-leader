@@ -31,6 +31,17 @@
    The leader has to be readable by =read-kbd-macro=, so using Space as a
    prefix key would be =(evil-leader/set-leader "<Space>")=.
 
+   Beginning with version 0.3 evil-leader has support for mode-local bindings:
+
+   #+BEGIN_SRC emacs-lisp
+(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
+   #+END_SRC
+
+   Again, you can bind several keys at once.
+
+   A mode-local binding shadows a normal mode-independent binding.
+
+
 ** FAQ
 *** <leader> is not working in certain buffers! Why?
     This can have two reasons. First, the buffer is not in normal state (like

@@ -44,34 +44,6 @@
 
 (defvar evil-leader/map (make-sparse-keymap)
   "Keymap used for leader bindings.")
-
-;;; utilities
-
-(defun evil-leader/set-leader (key &optional prefix)
-  "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
-
-Passing `nil' as `prefix' disables non-normal-prefix."
-  (let ((old (when (boundp 'evil-leader/leader) (read-kbd-macro evil-leader/leader)))
-        (old-prefixed (when (and (boundp 'evil-leader/non-normal-prefix)
-                                 (boundp 'evil-leader/leader)
-                                 evil-leader/non-normal-prefix)
-                        (read-kbd-macro (concat evil-leader/non-normal-prefix
-                                                evil-leader/leader))))
-        (prefixed (when prefix
-                    (read-kbd-macro (concat prefix key))))
-        (key (read-kbd-macro key)))
-    (when old-prefixed
-      (define-key evil-emacs-state-map old-prefixed nil)
-      (define-key evil-insert-state-map old-prefixed nil))
-    (when (and (boundp 'evil-leader/in-all-states) evil-leader/in-all-states prefixed)
-      (define-key evil-emacs-state-map prefixed evil-leader/map)
-      (define-key evil-insert-state-map prefixed evil-leader/map))
-    (when old
-      (define-key evil-normal-state-map old nil)
-      (define-key evil-visual-state-map old nil))
-    (define-key evil-normal-state-map key evil-leader/map)
-    (define-key evil-visual-state-map key evil-leader/map)))
-
 ;;; customization
 
 (defgroup evil-leader nil
@@ -83,31 +55,41 @@ Passing `nil' as `prefix' disables non-normal-prefix."
   "The <leader> key, used to access keys defined by `evil-leader/set-key' in normal and visual state.
 Must be readable by `read-kbd-macro'. For example: \",\"."
   :type "string"
-  :group 'evil-leader
-  :set (lambda (sym value)
-         (evil-leader/set-leader value (and (boundp 'evil-leader/non-normal-prefix)
-                                          evil-leader/non-normal-prefix))
-         (set-default sym value)))
+  :group 'evil-leader)
 
 (defcustom evil-leader/non-normal-prefix "C-"
   "Prefix for leader-map in insert- and emacs-state.
 `evil-leader/in-all-states' has to be non-nil for this to be set.
 The combination has to be readable by `read-kbd-macro'."
   :type 'string
-  :group 'evil-leader
-  :set (lambda (sym value)
-         (evil-leader/set-leader evil-leader/leader value)
-         (set-default sym value)))
+  :group 'evil-leader)
 
 (defcustom evil-leader/in-all-states nil
   "If is non-nil leader-map is accessible by <prefixed-leader> in emacs/insert state.
 
 <prefixed-leader> is `evil-leader/non-normal-prefix' + `evil-leader/leader'"
   :type 'boolean
-  :group 'evil-leader
-  :set (lambda (sym value)
-         (evil-leader/set-leader evil-leader/leader (and value evil-leader/non-normal-prefix))
-         (set-default sym value)))
+  :group 'evil-leader)
+
+(define-minor-mode evil-leader-mode
+  "Minor mode to enable <leader> support."
+  :init-value nil
+  :keymap nil
+  (let ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader))))
+    (if evil-leader-mode
+        (progn
+          (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) evil-leader/map)
+          (when evil-leader/in-all-states
+            (define-key evil-emacs-state-local-map prefixed evil-leader/map)
+            (define-key evil-insert-state-local-map prefixed evil-leader/map)))
+      (define-key evil-motion-state-local-map key nil)
+      (when evil-leader/in-all-states
+        (define-key evil-emacs-state-local-map prefixed nil)
+        (define-key evil-insert-state-local-map prefixed nil)))))
+
+(define-globalized-minor-mode global-evil-leader-mode evil-leader-mode
+  (lambda () (when evil-local-mode
+          (evil-leader-leader-mode))))
 
 (defun evil-leader/set-key (key def &rest bindings)
   "Bind KEY to DEF in `evil-leader-map'."

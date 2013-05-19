@@ -42,10 +42,13 @@
 
 (require 'evil)
 
-(defvar evil-leader/map (make-sparse-keymap)
-  "Keymap used for leader bindings.")
-;;; customization
+(defvar evil-leader--default-map (make-sparse-keymap)
+  "Keymap used for mode-independent leader bindings.")
 
+(defvar evil-leader--mode-maps nil
+  "Alist of mode-local leader bindings, shadows mode-independent bindings.")
+
+;;; customization
 (defgroup evil-leader nil
   "<leader> support for evil."
   :group 'evil
@@ -71,9 +74,6 @@ The combination has to be readable by `read-kbd-macro'."
   :type 'boolean
   :group 'evil-leader)
 
-(define-minor-mode evil-leader-mode
-  "Minor mode to enable <leader> support."
-  :init-value nil
 (defun evil-leader/set-leader (key &optional prefix)
   "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
 
@@ -87,32 +87,55 @@ Passing `nil' as `prefix' leaves prefix unchanged."
     (when turned-on
       (evil-leader-mode))))
 
+(define-minor-mode evil-leader-mode
+  "Minor mode to enable <leader> support."
+  :init-value nil
   :keymap nil
-  (let ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader))))
+  (let* ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader)))
+         (mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
+         (map (or mode-map evil-leader--default-map)))
     (if evil-leader-mode
         (progn
-          (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) evil-leader/map)
+          (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) map)
           (when evil-leader/in-all-states
-            (define-key evil-emacs-state-local-map prefixed evil-leader/map)
-            (define-key evil-insert-state-local-map prefixed evil-leader/map)))
-      (define-key evil-motion-state-local-map key nil)
+            (define-key evil-emacs-state-local-map prefixed map)
+            (define-key evil-insert-state-local-map prefixed map)))
+      (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) nil)
       (when evil-leader/in-all-states
         (define-key evil-emacs-state-local-map prefixed nil)
         (define-key evil-insert-state-local-map prefixed nil)))))
 
 (define-globalized-minor-mode global-evil-leader-mode evil-leader-mode
   (lambda () (when evil-local-mode
-          (evil-leader-leader-mode))))
+          (evil-leader-mode))))
 
 (defun evil-leader/set-key (key def &rest bindings)
-  "Bind KEY to DEF in `evil-leader-map'."
+  "Bind `key' to command `def' in `evil-leader/default-map'.
+
+Key has to be readable by `read-kbd-macro' and `def' a command.
+Accepts further `key' `def' pairs."
   (interactive "kKey: \naCommand: ")
+  (evil-leader--def-keys evil-leader--default-map key def bindings))
+(put 'evil-leader/set-key 'lisp-indent-function 'defun)
+
+(defun evil-leader/set-key-for-mode (mode key def &rest bindings)
+  "Create keybindings for major-mode `mode' with `key' bound to command `def'.
+
+See `evil-leader/set-key'."
+  (interactive "SMode: \nkKey: \naCommand: ")
+  (let ((mode-map (cdr (assoc mode evil-leader--mode-maps))))
+    (unless mode-map
+      (setq mode-map (make-sparse-keymap))
+      (set-keymap-parent mode-map evil-leader--default-map)
+      (push (cons mode mode-map) evil-leader--mode-maps))
+    (evil-leader--def-keys mode-map key def bindings)))
+(put 'evil-leader/set-key-for-mode 'lisp-indent-function 'defun)
+
+(defun evil-leader--def-keys (map key def &rest bindings)
   (while key
-    (define-key evil-leader/map (read-kbd-macro key) def)
+    (define-key map (read-kbd-macro key) def)
     (setq key (pop bindings)
           def (pop bindings))))
-
-(put 'evil-leader/set-key 'lisp-indent-function 'defun)
 
 (provide 'evil-leader)
 ;;; evil-leader.el ends here

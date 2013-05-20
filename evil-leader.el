@@ -5,7 +5,7 @@
 ;; URL: http://github.com/cofi/evil-leader
 ;; Git-Repository: git://github.com/cofi/evil-leader.git
 ;; Created: 2011-09-13
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; Keywords: evil vim-emulation leader
 ;; Package-Requires: ((evil "0"))
 
@@ -118,6 +118,7 @@ Passing `nil' as `prefix' leaves prefix unchanged."
     (when turned-on
       (evil-leader-mode))))
 
+;;;###autoload
 (define-minor-mode evil-leader-mode
   "Minor mode to enable <leader> support."
   :init-value nil
@@ -136,10 +137,12 @@ Passing `nil' as `prefix' leaves prefix unchanged."
         (define-key evil-emacs-state-local-map prefixed nil)
         (define-key evil-insert-state-local-map prefixed nil)))))
 
+;;;###autoload
 (define-globalized-minor-mode global-evil-leader-mode evil-leader-mode
   (lambda () (when evil-local-mode
           (evil-leader-mode))))
 
+;;;###autoload
 (defun evil-leader/set-key (key def &rest bindings)
   "Bind `key' to command `def' in `evil-leader/default-map'.
 
@@ -149,6 +152,7 @@ Accepts further `key' `def' pairs."
   (evil-leader--def-keys evil-leader--default-map key def bindings))
 (put 'evil-leader/set-key 'lisp-indent-function 'defun)
 
+;;;###autoload
 (defun evil-leader/set-key-for-mode (mode key def &rest bindings)
   "Create keybindings for major-mode `mode' with `key' bound to command `def'.
 

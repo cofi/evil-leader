@@ -5,7 +5,7 @@
 ;; URL: http://github.com/cofi/evil-leader
 ;; Git-Repository: git://github.com/cofi/evil-leader.git
 ;; Created: 2011-09-13
-;; Version: 0.3
+;; Version: 0.3.1
 ;; Keywords: evil vim-emulation leader
 ;; Package-Requires: ((evil "0"))
 
@@ -162,7 +162,7 @@ See `evil-leader/set-key'."
     (evil-leader--def-keys mode-map key def bindings)))
 (put 'evil-leader/set-key-for-mode 'lisp-indent-function 'defun)
 
-(defun evil-leader--def-keys (map key def &rest bindings)
+(defun evil-leader--def-keys (map key def bindings)
   (while key
     (define-key map (read-kbd-macro key) def)
     (setq key (pop bindings)

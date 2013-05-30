@@ -41,12 +41,12 @@
 ;;    Use `evil-leader/set-key' to bind keys in the leader map.
 ;;    For example:
 ;;
-;; (evil-leader/set-key "e" 'file-file)
+;; (evil-leader/set-key "e" 'find-file)
 ;;
 ;;    You can also bind several keys at once:
 ;;
 ;; (evil-leader/set-key
-;;   "e" 'file-file
+;;   "e" 'find-file
 ;;   "b" 'switch-to-buffer
 ;;   "k" 'kill-buffer)
 ;;

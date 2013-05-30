@@ -105,23 +105,13 @@ The combination has to be readable by `read-kbd-macro'."
   :type 'boolean
   :group 'evil-leader)
 
-(defun evil-leader/set-leader (key &optional prefix)
-  "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
-
-Passing `nil' as `prefix' leaves prefix unchanged."
-  (let ((global-on global-evil-leader-mode)
-        (local-on evil-leader-mode))
-    (when local-on
-      (evil-leader-mode -1))
-    (when global-on
-      (global-evil-leader-mode -1))
-    (setq evil-leader/leader key)
-    (when prefix
-      (setq evil-leader/non-normal-prefix prefix))
-    (if global-on
-        (global-evil-leader-mode 1)
-      (when local-on
-        (evil-leader-mode 1)))))
+;;;###autoload
+(define-minor-mode global-evil-leader-mode
+  "Global minor mode for <leader> support."
+  nil nil nil
+  (if global-evil-leader-mode
+      (add-hook 'evil-local-mode-hook #'evil-leader-mode)
+    (remove-hook 'evil-local-mode-hook #'evil-leader-mode)))
 
 ;;;###autoload
 (define-minor-mode evil-leader-mode
@@ -142,10 +132,23 @@ Passing `nil' as `prefix' leaves prefix unchanged."
         (define-key evil-emacs-state-local-map prefixed nil)
         (define-key evil-insert-state-local-map prefixed nil)))))
 
-;;;###autoload
-(define-globalized-minor-mode global-evil-leader-mode evil-leader-mode
-  (lambda () (when evil-local-mode
-          (evil-leader-mode))))
+(defun evil-leader/set-leader (key &optional prefix)
+  "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
+
+Passing `nil' as `prefix' leaves prefix unchanged."
+  (let ((global-on global-evil-leader-mode)
+        (local-on evil-leader-mode))
+    (when local-on
+      (evil-leader-mode -1))
+    (when global-on
+      (global-evil-leader-mode -1))
+    (setq evil-leader/leader key)
+    (when prefix
+      (setq evil-leader/non-normal-prefix prefix))
+    (if global-on
+        (global-evil-leader-mode 1)
+      (when local-on
+        (evil-leader-mode 1)))))
 
 ;;;###autoload
 (defun evil-leader/set-key (key def &rest bindings)

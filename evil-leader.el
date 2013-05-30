@@ -109,14 +109,19 @@ The combination has to be readable by `read-kbd-macro'."
   "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
 
 Passing `nil' as `prefix' leaves prefix unchanged."
-  (let ((turned-on evil-leader-mode))
-    (when turned-on
+  (let ((global-on global-evil-leader-mode)
+        (local-on evil-leader-mode))
+    (when local-on
       (evil-leader-mode -1))
+    (when global-on
+      (global-evil-leader-mode -1))
     (setq evil-leader/leader key)
     (when prefix
       (setq evil-leader/non-normal-prefix prefix))
-    (when turned-on
-      (evil-leader-mode))))
+    (if global-on
+        (global-evil-leader-mode 1)
+      (when local-on
+        (evil-leader-mode 1)))))
 
 ;;;###autoload
 (define-minor-mode evil-leader-mode

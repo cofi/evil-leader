@@ -13,6 +13,10 @@
    #+END_SRC
    to enable =evil-leader= in every buffer where =evil= is enabled.
 
+   Note: You should enable =global-evil-leader-mode= before you enable =evil-mode=,
+   otherwise =evil-leader= won't be enabled in initial buffers (=*scratch*=,
+   =*Messages*=, ...).
+
    Use =evil-leader/set-key= to bind keys in the leader map.
    For example:
    #+BEGIN_SRC emacs-lisp

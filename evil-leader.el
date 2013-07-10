@@ -92,7 +92,7 @@
 (defcustom evil-leader/leader "\\"
   "The <leader> key, used to access keys defined by `evil-leader/set-key' in normal and visual state.
 Must be readable by `read-kbd-macro'. For example: \",\"."
-  :type "string"
+  :type 'string
   :group 'evil-leader)
 
 (defcustom evil-leader/non-normal-prefix "C-"

@@ -127,6 +127,7 @@ The combination has to be readable by `read-kbd-macro'."
          (map (or mode-map evil-leader--default-map)))
     (if evil-leader-mode
         (progn
+          (evil-normalize-keymaps)
           (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) map)
           (when evil-leader/in-all-states
             (define-key evil-emacs-state-local-map prefixed map)

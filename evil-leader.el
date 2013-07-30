@@ -114,8 +114,8 @@ The combination has to be readable by `read-kbd-macro'."
   "Global minor mode for <leader> support."
   nil nil nil
   (if global-evil-leader-mode
-      (add-hook 'evil-local-mode-hook #'evil-leader-mode)
-    (remove-hook 'evil-local-mode-hook #'evil-leader-mode)))
+      (add-hook 'evil-local-mode-hook #'evil-leader-mode t)
+    (remove-hook 'evil-local-mode-hook #'evil-leader-mode t)))
 
 ;;;###autoload
 (define-minor-mode evil-leader-mode

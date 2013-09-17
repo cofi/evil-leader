@@ -20,12 +20,12 @@
    Use =evil-leader/set-key= to bind keys in the leader map.
    For example:
    #+BEGIN_SRC emacs-lisp
-(evil-leader/set-key "e" 'file-file)
+(evil-leader/set-key "e" 'find-file)
    #+END_SRC
    You can also bind several keys at once:
    #+BEGIN_SRC emacs-lisp
 (evil-leader/set-key
-  "e" 'file-file
+  "e" 'find-file
   "b" 'switch-to-buffer
   "k" 'kill-buffer)
    #+END_SRC

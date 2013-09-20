@@ -102,6 +102,17 @@ The combination has to be readable by `read-kbd-macro'."
   :type 'string
   :group 'evil-leader)
 
+(defcustom evil-leader/no-prefix-mode-rx nil
+  "Regular expression for mode names where `evil-leader/leader' is used regardless of the state.
+
+If a mode name is matched by this regular expression
+`evil-leader/leader' is installed in emacs/insert state without
+the prefix additionally to the prefixed key.
+
+`evil-leader/in-all-states' has to be non-nil for this setting to have any effect."
+  :type 'string
+  :group 'evil-leader)
+
 (defcustom evil-leader/in-all-states nil
   "If is non-nil leader-map is accessible by <prefixed-leader> in emacs/insert state.
 
@@ -123,19 +134,28 @@ The combination has to be readable by `read-kbd-macro'."
   :init-value nil
   :keymap nil
   (let* ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader)))
+         (no-prefix (read-kbd-macro evil-leader/leader))
          (mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
          (map (or mode-map evil-leader--default-map)))
     (if evil-leader-mode
         (progn
           (evil-normalize-keymaps)
-          (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) map)
+          (define-key evil-motion-state-local-map no-prefix map)
           (when evil-leader/in-all-states
             (define-key evil-emacs-state-local-map prefixed map)
-            (define-key evil-insert-state-local-map prefixed map)))
-      (define-key evil-motion-state-local-map (read-kbd-macro evil-leader/leader) nil)
+            (define-key evil-insert-state-local-map prefixed map))
+          (when (and evil-leader/no-prefix-mode-rx
+                     (string-match-p evil-leader/no-prefix-mode-rx (symbol-name major-mode)))
+            (define-key evil-emacs-state-local-map no-prefix map)
+            (define-key evil-insert-state-local-map no-prefix map)))
+      (define-key evil-motion-state-local-map no-prefix nil)
       (when evil-leader/in-all-states
         (define-key evil-emacs-state-local-map prefixed nil)
-        (define-key evil-insert-state-local-map prefixed nil)))))
+        (define-key evil-insert-state-local-map prefixed nil)
+        (when (and evil-leader/no-prefix-mode-rx
+                 (string-match-p evil-leader/no-prefix-mode-rx (symbol-name major-mode)))
+          (define-key evil-emacs-state-local-map no-prefix nil)
+          (define-key evil-insert-state-local-map no-prefix nil))))))
 
 (defun evil-leader/set-leader (key &optional prefix)
   "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.

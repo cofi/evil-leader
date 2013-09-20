@@ -50,7 +50,6 @@
 
    A mode-local binding shadows a normal mode-independent binding.
 
-
 ** FAQ
 *** <leader> is not working in certain buffers! Why?
     This can have two reasons. First, the buffer is not in normal state (like
@@ -58,10 +57,18 @@
     (before loading evil-leader or via customize) you can access the leader
     keymap still with the non-normal-prefix + leader (default: =C-\=).
 
+    Another option is to use =evil-leader/no-prefix-mode-rx= if you want the
+    non-prefixed =<leader>= in certain major modes. But be careful as this
+    introduces the =<leader>= in the insert and emacs states which means you can't
+    type the char =<leader>= stands for (=\= by default).
+    E.g. this code will let you use the non-prefixed =<leader>= in magit's modes:
+
+   #+BEGIN_SRC emacs-lisp
+(setq evil-leader/no-prefix-mode-rx "magit-.*-mode")
+   #+END_SRC
+
     Second, =<leader>= can be overshadowed by the current major-mode because
     evil-leader uses the global keymap which has a lower priority than the local
-    keymap. To still use =<leader>= you have to either use another key or 
-
-  Have a
+    keymap. To still use =<leader>= you have to either use another key or have a
     look at =C-h k <leader>=, if it is bound then it overshadows the evil-leader
     keymap.

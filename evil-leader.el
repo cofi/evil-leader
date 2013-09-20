@@ -105,7 +105,7 @@ The combination has to be readable by `read-kbd-macro'."
 (defcustom evil-leader/no-prefix-mode-rx nil
   "Regular expression for mode names where `evil-leader/leader' is used regardless of the state.
 
-If a mode name is matched by this regular expression
+If the current major mode is matched by this regular expression
 `evil-leader/leader' is installed in emacs/insert state without
 the prefix additionally to the prefixed key.
 

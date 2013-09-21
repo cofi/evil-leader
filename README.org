@@ -61,10 +61,10 @@
     non-prefixed =<leader>= in certain major modes. But be careful as this
     introduces the =<leader>= in the insert and emacs states which means you can't
     type the char =<leader>= (=\= by default).
-    E.g. this code will let you use the non-prefixed =<leader>= in magit's modes:
+    E.g. this code will let you use the non-prefixed =<leader>= in magit's and gnus' modes:
 
    #+BEGIN_SRC emacs-lisp
-(setq evil-leader/no-prefix-mode-rx "magit-.*-mode")
+(setq evil-leader/no-prefix-mode-rx '("magit-.*-mode" "gnus-.*-mode"))
    #+END_SRC
 
     Second, =<leader>= can be overshadowed by the current major-mode because

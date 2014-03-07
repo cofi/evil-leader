@@ -144,6 +144,7 @@ the prefix additionally to the prefixed key.
         (progn
           (evil-normalize-keymaps)
           (define-key evil-motion-state-local-map no-prefix map)
+          (define-key evil-normal-state-local-map no-prefix map)
           (when evil-leader/in-all-states
             (define-key evil-emacs-state-local-map prefixed map)
             (define-key evil-insert-state-local-map prefixed map))
@@ -151,6 +152,7 @@ the prefix additionally to the prefixed key.
             (define-key evil-emacs-state-local-map no-prefix map)
             (define-key evil-insert-state-local-map no-prefix map)))
       (define-key evil-motion-state-local-map no-prefix nil)
+      (define-key evil-normal-state-local-map no-prefix nil)
       (when evil-leader/in-all-states
         (define-key evil-emacs-state-local-map prefixed nil)
         (define-key evil-insert-state-local-map prefixed nil)

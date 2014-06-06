@@ -63,7 +63,7 @@
 ;;    `evil-leader/set-leader', e.g. (evil-leader/set-leader ",") to change it to
 ;;    ",".
 ;;    The leader has to be readable by `read-kbd-macro', so using Space as a
-;;    prefix key would be (evil-leader/set-leader "<Space>").
+;;    prefix key would be (evil-leader/set-leader "<SPC>").
 ;;
 ;;    Beginning with version 0.3 evil-leader has support for mode-local bindings:
 ;;

@@ -5,7 +5,7 @@
 ;; URL: http://github.com/cofi/evil-leader
 ;; Git-Repository: git://github.com/cofi/evil-leader.git
 ;; Created: 2011-09-13
-;; Version: 0.4.2
+;; Version: 0.4.3
 ;; Keywords: evil vim-emulation leader
 ;; Package-Requires: ((evil "0"))
 
@@ -63,7 +63,7 @@
 ;;    `evil-leader/set-leader', e.g. (evil-leader/set-leader ",") to change it to
 ;;    ",".
 ;;    The leader has to be readable by `read-kbd-macro', so using Space as a
-;;    prefix key would be (evil-leader/set-leader "<Space>").
+;;    prefix key would be (evil-leader/set-leader "<SPC>").
 ;;
 ;;    Beginning with version 0.3 evil-leader has support for mode-local bindings:
 ;;

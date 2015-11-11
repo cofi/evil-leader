@@ -135,7 +135,10 @@ the prefix additionally to the prefixed key.
   :keymap nil
   (let* ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader)))
          (no-prefix (read-kbd-macro evil-leader/leader))
-         (mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
+	 (minor-modes (mapcar 'car minor-mode-alist))
+	 (active-modes (cons major-mode minor-modes))
+	 (get-keymap-for-mode (lambda (mode) (cdr (assoc mode evil-leader--mode-maps))))
+	 (mode-map (apply 'append (mapcar get-keymap-for-mode active-modes)))
          (map (or mode-map evil-leader--default-map))
          (no-prefix-rx (if evil-leader/no-prefix-mode-rx
                            (mapconcat #'identity evil-leader/no-prefix-mode-rx "\\|")

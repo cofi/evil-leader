@@ -83,6 +83,9 @@
 (defvar evil-leader--mode-maps nil
   "Alist of mode-local leader bindings, shadows mode-independent bindings.")
 
+(defvar-local evil-leader--local-map nil
+  "Keymap with additional bindings to be used locally in a buffer.")
+
 ;;; customization
 (defgroup evil-leader nil
   "<leader> support for evil."
@@ -136,7 +139,7 @@ the prefix additionally to the prefixed key.
   (let* ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader)))
          (no-prefix (read-kbd-macro evil-leader/leader))
          (mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
-         (map (or mode-map evil-leader--default-map))
+         (map (or evil-leader--local-map mode-map evil-leader--default-map))
          (no-prefix-rx (if evil-leader/no-prefix-mode-rx
                            (mapconcat #'identity evil-leader/no-prefix-mode-rx "\\|")
                          nil)))
@@ -207,6 +210,18 @@ See `evil-leader/set-key'."
     (define-key map (read-kbd-macro key) def)
     (setq key (pop bindings)
           def (pop bindings))))
+
+;;;###autoload
+(defun evil-leader/set-local-key (key def &rest bindings)
+  "Create keybindings locally. Most useful within minor mode hooks."
+  (interactive "kKey: \naCommand: ")
+  (let* ((mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
+         (map (or mode-map evil-leader--default-map)))
+    (unless evil-leader--local-map
+      (setq evil-leader--local-map (make-sparse-keymap))
+      (set-keymap-parent evil-leader--local-map map))
+    (evil-leader--def-keys evil-leader--local-map key def bindings)))
+(put 'evil-leader/set-local-key 'lisp-indent-function 'defun)
 
 (provide 'evil-leader)
 ;;; evil-leader.el ends here

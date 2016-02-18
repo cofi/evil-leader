@@ -131,15 +131,9 @@ the prefix additionally to the prefixed key.
       (add-hook 'evil-local-mode-hook #'evil-leader-mode t)
     (remove-hook 'evil-local-mode-hook #'evil-leader-mode t)))
 
-;;;###autoload
-(define-minor-mode evil-leader-mode
-  "Minor mode to enable <leader> support."
-  :init-value nil
-  :keymap nil
+(defun evil-leader/define-leader-prefix (map)
   (let* ((prefixed (read-kbd-macro (concat evil-leader/non-normal-prefix evil-leader/leader)))
          (no-prefix (read-kbd-macro evil-leader/leader))
-         (mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
-         (map (or evil-leader--local-map mode-map evil-leader--default-map))
          (no-prefix-rx (if evil-leader/no-prefix-mode-rx
                            (mapconcat #'identity evil-leader/no-prefix-mode-rx "\\|")
                          nil)))
@@ -162,6 +156,15 @@ the prefix additionally to the prefixed key.
         (when (and no-prefix-rx (string-match-p no-prefix-rx (symbol-name major-mode)))
           (define-key evil-emacs-state-local-map no-prefix nil)
           (define-key evil-insert-state-local-map no-prefix nil))))))
+
+;;;###autoload
+(define-minor-mode evil-leader-mode
+  "Minor mode to enable <leader> support."
+  :init-value nil
+  :keymap nil
+  (let* ((mode-map (cdr (assoc major-mode evil-leader--mode-maps)))
+         (map (or evil-leader--local-map mode-map evil-leader--default-map)))
+    (evil-leader/define-leader-prefix map)))
 
 (defun evil-leader/set-leader (key &optional prefix)
   "Set leader key to `key' and non-normal-prefix to `prefix' and remove old bindings.
@@ -220,7 +223,8 @@ See `evil-leader/set-key'."
     (unless evil-leader--local-map
       (setq evil-leader--local-map (make-sparse-keymap))
       (set-keymap-parent evil-leader--local-map map))
-    (evil-leader--def-keys evil-leader--local-map key def bindings)))
+    (evil-leader--def-keys evil-leader--local-map key def bindings)
+    (evil-leader/define-leader-prefix evil-leader--local-map)))
 (put 'evil-leader/set-local-key 'lisp-indent-function 'defun)
 
 (provide 'evil-leader)
